@@ -1,0 +1,370 @@
+<html>
+
+
+    <head>
+        <title>TO-DO-APP</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      </head>
+<style>
+#status{
+    width: 200px;
+    height: 30px;
+}
+#status1{
+    width: 200px;
+    height: 30px;
+}
+.update{
+
+
+text-align: center;
+padding: 10px;
+border: 3px dashed;
+
+
+}
+
+.heading{
+
+margin:20px;
+margin-top:40px;
+text-align: center;
+font-size: 40px;
+font-family:cursive;
+
+}
+
+#noelements{
+
+    text-align: center;
+    position: relative;
+    top:30px;
+    font-size: 50px;
+    font-weight: bold;
+    font-family:'Courier New', Courier, monospace;
+
+}
+.button{
+
+border-style: double;
+border-radius: 20px;
+padding: 10px;
+margin: 10px;
+background-color: orange;
+height:50px;
+width:100px;
+
+}
+
+
+.newdata{
+
+    text-align: center;
+   
+    font-size: 70px;
+}
+
+.border{
+
+border-top:2px solid;
+margin: 4px;
+
+}
+</style>
+<script>
+
+
+var globalid=0;
+
+function deleterecord(){
+    id=this.id;
+    var xhr = new XMLHttpRequest();
+    delete_url="http://34.71.224.0:8080/api/tasks/"+id;
+    console.log(delete_url)
+    xhr.open('DELETE',delete_url ,true);
+    xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTc0MzMzOTl9._VY8Ao2E4a4C5_3aWpRh3HzPBJPlQ4SWdzAlMObp89r3rEx2jQXs-x_Lz7ozNDZuIdxI9zuExRUFYCQaYwfRUw');
+    xhr.withCredentials = true;
+    console.log(xhr);
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 400) {
+           location.reload();
+        
+        
+        }
+            else{
+                console.log("error");
+            }}
+
+xhr.send();
+}
+function updatetask(){
+
+
+    var newdata = {};
+    newdata['id']=globalid;
+    newdata['name']=document.getElementById("name").value;
+    newdata['status']=document.getElementById('status').value;
+    newdata['expiryDate']=document.getElementById('datetime').value+":00Z";
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', "http://34.71.224.0:8080/api/tasks",true);
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+    xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTc0MzMzOTl9._VY8Ao2E4a4C5_3aWpRh3HzPBJPlQ4SWdzAlMObp89r3rEx2jQXs-x_Lz7ozNDZuIdxI9zuExRUFYCQaYwfRUw');
+    xhr.withCredentials = true; 
+    var jsondata = JSON.stringify(newdata);
+    xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 400) {
+       
+
+        location.reload();
+        }
+    else{
+        console.log("error");
+    }
+    
+}
+xhr.send(jsondata);
+}
+    
+function createtask(){
+
+    var newdata = {};
+    newdata['name']=document.getElementById("name1").value;
+    newdata['status']=document.getElementById('status1').value;
+    newdata['expiryDate']=document.getElementById('datetime1').value+":00Z";
+    console.log(newdata);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', "http://34.71.224.0:8080/api/tasks",true);
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+    xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTc0MzMzOTl9._VY8Ao2E4a4C5_3aWpRh3HzPBJPlQ4SWdzAlMObp89r3rEx2jQXs-x_Lz7ozNDZuIdxI9zuExRUFYCQaYwfRUw');
+    xhr.withCredentials = true; 
+    var jsondata = JSON.stringify(newdata);
+    console.log(xhr)
+    console.log(jsondata)
+    xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 400) {
+       
+
+        location.reload();
+    }
+    else{
+        console.log("error");
+    }}
+xhr.send(jsondata);
+}
+    
+
+
+
+
+
+function updaterecord(){
+
+    globalid=this.id;
+    document.getElementById("name").value=this.name;
+    document.getElementById("status").value=this.status;
+    document.getElementById("datetime").value=this.expiryDate.substring(0,16);
+    
+}
+
+
+function tableInsert(row){
+    var table=document.getElementById("mytable");
+    var onerow=table.insertRow(0);
+    let name=onerow.insertCell(0);
+    let expdate=onerow.insertCell(1);
+    let status=onerow.insertCell(2);
+    let update=onerow.insertCell(3);
+    let del=onerow.insertCell(4);
+    name.innerHTML=row['name'];
+    console.log(name);
+    expdate.innerHTML=row['expiryDate'].substring(0,10);
+    status.innerHTML=row['status'];
+    let anchortag_for_delete=document.createElement("input");
+    anchortag_for_delete.type="button";
+    anchortag_for_delete.value="DELETE";
+    anchortag_for_delete.id=row['id'];
+    anchortag_for_delete.onclick=deleterecord;
+    anchortag_for_delete.className="btn btn-danger";
+    del.appendChild(anchortag_for_delete); 
+    let anchortag_for_update=document.createElement("input");
+    anchortag_for_update.type="button";
+    anchortag_for_update.value="EDIT";
+    anchortag_for_update.id=row['id'];
+    anchortag_for_update.name=row['name'];
+    anchortag_for_update.status=row['status'];
+    anchortag_for_update.expiryDate=row['expiryDate'];
+    anchortag_for_update.onclick=updaterecord;
+    anchortag_for_update.className="btn btn-success";
+    update.appendChild(anchortag_for_update);
+
+
+
+}
+
+let promise =new Promise(function(resolve,reject){
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "http://34.71.224.0:8080/api/tasks",true);
+    xhr.setRequestHeader('Authorization','Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE2MTc0MzMzOTl9._VY8Ao2E4a4C5_3aWpRh3HzPBJPlQ4SWdzAlMObp89r3rEx2jQXs-x_Lz7ozNDZuIdxI9zuExRUFYCQaYwfRUw');
+    xhr.withCredentials = true;
+    console.log(xhr);
+    xhr.onload = function () {
+    var data = JSON.parse(xhr.responseText)
+    if (xhr.status >= 200 && xhr.status < 400) {
+          
+        resolve(data)}
+          else{
+
+            reject("Error occured")
+          }}
+    xhr.send();
+})
+
+promise.then(
+
+function(data){
+
+if(data.length===0){
+    document.getElementById("noelements").innerText="No Tasks currently"
+}
+
+else{
+data.forEach(tableInsert)
+
+}
+
+},
+function(error){
+
+    document.getElementById("noelements").innerText="ERROR OCCURED"
+}
+
+);
+
+
+
+
+
+</script>
+<body>
+
+<div class="heading">
+
+To Do App
+</div>
+
+<br><br>
+<h3><b>UPDATE UR TASK:</b></h3>
+<div class="update">
+
+<form action="">
+    <label><b>Name of the task:</b></label>
+    <input type="text" id="name"  required>
+    <br>
+       <br>
+       <label><b>Status of the task:</b></label>
+       
+       <select id="status">
+        <option value="DONE">DONE</option>
+        <option value="PENDING" selected="selected">PENDING</option>
+    
+      </select>
+
+       <br>
+       <br>
+       <label><b>Expiry Date:</b></label>
+     <input type="datetime-local" id="datetime">
+     <br><br>
+
+     <input type="button" class="btn btn-success" onclick="updatetask()" value="UPDATE">
+
+
+
+
+</form>
+
+</div>
+
+
+
+
+    
+
+</div>
+
+       
+
+
+
+
+<br><br><br>
+<div class="table1">
+<table class="table  table-hover">
+    <thead id="append">
+      <tr>
+        <th>TaskName</th>
+        <th>Expiry Date</th>
+        <th>Status</th>
+        <th>UPDATE</th>
+        <th>Delete The Record</th>
+      </tr>
+    </thead>
+
+    <tbody id="mytable">
+     
+    </tbody>
+  </table>
+</div>
+<div id="noelements">
+
+
+</div>
+
+
+<br><br><br>
+<h3><b>CREATE UR TASK:</b></h3>
+<div class="update">
+
+<form action="">
+    <label><b>Name of the task:</b></label>
+    <input type="text" id="name1"  required>
+    <br>
+       <br>
+       <label><b>Status of the task:</b></label>
+       
+       <select id="status1">
+        <option value="DONE">DONE</option>
+        <option value="PENDING" selected="selected">PENDING</option>
+    
+      </select>
+
+       <br>
+       <br>
+       <label><b>Expiry Date:</b></label>
+     <input type="datetime-local" id="datetime1">
+     <br><br>
+
+     <input type="button" class="btn btn-success" onclick="createtask()" value="CREATE">
+
+
+
+
+</form>
+
+</div>
+
+
+
+
+
+</body>
+
+
+
+
+
+</html>
