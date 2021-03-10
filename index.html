@@ -14,6 +14,9 @@
     width: 200px;
     height: 30px;
 }
+#heading1{
+    text-align: left;
+}
 #status1{
     width: 200px;
     height: 30px;
@@ -24,6 +27,18 @@
 text-align: center;
 padding: 10px;
 border: 3px dashed;
+display: none;
+
+
+}
+
+.update1{
+
+
+text-align: center;
+padding: 10px;
+border: 3px dashed;
+display: none;
 
 
 }
@@ -36,6 +51,11 @@ text-align: center;
 font-size: 40px;
 font-family:cursive;
 
+}
+.popup{
+
+ display: relative;
+ left:200px;
 }
 
 #noelements{
@@ -131,6 +151,7 @@ xhr.send(jsondata);
     
 function createtask(){
 
+
     var newdata = {};
     newdata['name']=document.getElementById("name1").value;
     newdata['status']=document.getElementById('status1').value;
@@ -158,11 +179,18 @@ xhr.send(jsondata);
     
 
 
+function createpoptask(){
+    document.getElementById('update1').style.display="block";
 
+}
+function cancelpopup(){
+    document.getElementById('update1').style.display="none";
+}
 
 
 function updaterecord(){
 
+document.getElementById('update').style.display="block";
     globalid=this.id;
     document.getElementById("name").value=this.name;
     document.getElementById("status").value=this.status;
@@ -247,7 +275,10 @@ function(error){
 
 
 
+function canceltask(){
 
+    document.getElementById('update').style.display="none";
+}
 
 </script>
 <body>
@@ -258,9 +289,13 @@ To Do App
 </div>
 
 <br><br>
-<h3><b>UPDATE UR TASK:</b></h3>
-<div class="update">
-
+<divc class="popup">
+<input type="button" class="btn btn-success" onclick="createpoptask()" value="CREATE TASK">
+</div>
+<br>
+<br>
+<div class="update" id="update">
+    <h3 id="heading1"><b>UPDATE UR TASK:</b></h3>
 <form action="">
     <label><b>Name of the task:</b></label>
     <input type="text" id="name"  required>
@@ -281,6 +316,7 @@ To Do App
      <br><br>
 
      <input type="button" class="btn btn-success" onclick="updatetask()" value="UPDATE">
+     <input type="button" class="btn btn-danger" onclick="canceltask()" value="CANCEL">
 
 
 
@@ -326,9 +362,9 @@ To Do App
 
 
 <br><br><br>
-<h3><b>CREATE UR TASK:</b></h3>
-<div class="update">
 
+<div class="update1" id="update1">
+    <h3 id="heading1"><b>CREATE UR TASK:</b></h3>
 <form action="">
     <label><b>Name of the task:</b></label>
     <input type="text" id="name1"  required>
@@ -349,6 +385,7 @@ To Do App
      <br><br>
 
      <input type="button" class="btn btn-success" onclick="createtask()" value="CREATE">
+     <input type="button" class="btn btn-danger" onclick="cancelpopup()" value="CANCEL">
 
 
 
